@@ -13,7 +13,13 @@ export default function App() {
       <div className="container">
         <div className="left-side">
           FORM VIEW
-          <ContactForm name={name} email={email} phone={phone} />
+          <ContactForm
+            onUpdateResume={(name, email, phone) => {
+              setName(name);
+              setEmail(email);
+              setPhone(phone);
+            }}
+          />
         </div>
         <div className="right-side">
           RESUME VIEW
@@ -25,3 +31,6 @@ export default function App() {
     </>
   );
 }
+
+// edit button should display on hover over resume section
+// FORM VIEW would be hidden until a user clicks a button to edit
