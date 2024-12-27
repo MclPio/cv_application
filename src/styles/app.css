@@ -34,3 +34,25 @@
 .hidden {
   display: none;
 }
+
+.personal-info-input {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+}
+
+.experience-input {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+}
+
+.resume-form{
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+button {
+  align-self: flex-start;
+}

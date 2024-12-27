@@ -1,28 +1,28 @@
-function ExperienceInfo() {
+function ExperienceInfo({ experience }) {
+  const jobResponsibilities = experience.jobDescription.map((item) => (
+    <li key={item}>{item}</li>
+  ));
+
   return (
     <>
       <div className="experience-info">
         <div className="experience-info-details">
           <div className="experience-info-left">
-            <div>Company Name</div>
-            <div>Position Title</div>
+            <div>{experience.companyName}</div>
+            <div>{experience.positionTitle}</div>
           </div>
-          <div>Date</div>
+          <div>{experience.date}</div>
         </div>
         <div>
           Job Responsibilities
-          <ul>
-            <li>point 1</li>
-            <li>point 2</li>
-            <li>point 3</li>
-          </ul>
+          <ul>{jobResponsibilities}</ul>
         </div>
       </div>
     </>
   );
 }
 
-export default function Experience() {
+export default function Experience({ experience }) {
   // company name, position title, main responsibilities of your jobs,
   // date from and until when you worked for that company
 
@@ -30,7 +30,7 @@ export default function Experience() {
     <>
       <h2>Experience</h2>
       <div className="experience">
-        <ExperienceInfo />
+        <ExperienceInfo experience={experience} />
       </div>
     </>
   );
