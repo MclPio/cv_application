@@ -3,32 +3,7 @@ import "./styles/app.css";
 import Experience from "./components/Experience";
 import Education from "./components/Education";
 import PersonalInfo from "./components/PersonalInfo";
-
-function PersonalInfoInput({ name, email, phone, location, url }) {
-  return (
-    <div className="personal-info-input">
-      <label htmlFor="fullname">Name</label>
-      <input type="text" id="fullname" name="fullname" defaultValue={name} />
-
-      <label htmlFor="email">Email</label>
-      <input type="email" id="email" name="email" defaultValue={email} />
-
-      <label htmlFor="phone">Phone</label>
-      <input type="tel" id="phone" name="phone" defaultValue={phone} />
-
-      <label htmlFor="location">Location</label>
-      <input
-        type="text"
-        id="location"
-        name="location"
-        defaultValue={location}
-      />
-
-      <label htmlFor="url">URL</label>
-      <input type="url" id="url" name="url" defaultValue={url} />
-    </div>
-  );
-}
+import PersonalInfoInput from "./components/PersonalInfoInput";
 
 function Resume() {
   const [resumeView, setResumeView] = useState(true);
@@ -38,6 +13,16 @@ function Resume() {
     phone: "123-555-1241",
     location: "Toronto, Canada",
     url: "joesmith.community",
+  });
+  const [experience, setExperience] = useState({
+    companyName: "intel",
+    positionTitle: "hardware engineer",
+    date: "2025",
+    jobDescription: [
+      "Engineered new cpus resulting in 500% increase in revenue",
+      "Wired electric wires improving efficiency by 25%",
+      "Ate 5 cupcakes from company cafeteria consistently achieving a 250% eating ratio compared to others",
+    ],
   });
 
   function switchView() {
@@ -56,7 +41,10 @@ function Resume() {
   } else {
     return (
       <div className="resume-form">
-        <PersonalInfoInput {...personalInfo} />
+        <PersonalInfoInput
+          personalInfo={personalInfo}
+          setPersonalInfo={setPersonalInfo}
+        />
         <button onClick={switchView}>Submit</button>
       </div>
     );
