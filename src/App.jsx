@@ -1,95 +1,66 @@
 import { useState } from "react";
 import "./styles/app.css";
+import Experience from "./components/Experience";
+import Education from "./components/Education";
+import PersonalInfo from "./components/PersonalInfo";
 
-function PersonalInfo() {
+function PersonalInfoInput({ name, email, phone, location, url }) {
   return (
-    <>
-      <div className="personal-info">
-        <h1>name</h1>
-        <div className="personal-info-details">
-          <div>email</div>
-          <div>phone number</div>
-          <div>location</div>
-          <div>url</div>
-        </div>
-      </div>
-    </>
-  );
-}
+    <div className="personal-info-input">
+      <label htmlFor="fullname">Name</label>
+      <input type="text" id="fullname" name="fullname" defaultValue={name} />
 
-function School() {
-  return (
-    <>
-      <div className="school">
-        <div className="school-left">
-          <div>
-            <b>school name</b>
-          </div>
-          <div>title of study</div>
-        </div>
-        <div>date of study</div>
-      </div>
-    </>
-  );
-}
+      <label htmlFor="email">Email</label>
+      <input type="email" id="email" name="email" defaultValue={email} />
 
-function Education() {
-  return (
-    <>
-      <h2>Education</h2>
-      <div className="education">
-        <School />
-      </div>
-    </>
-  );
-}
+      <label htmlFor="phone">Phone</label>
+      <input type="tel" id="phone" name="phone" defaultValue={phone} />
 
-function ExperienceInfo() {
-  return (
-    <>
-      <div className="experience-info">
-        <div className="experience-info-details">
-          <div className="experience-info-left">
-            <div>Company Name</div>
-            <div>Position Title</div>
-          </div>
-          <div>Date</div>
-        </div>
-        <div>
-          Job Responsibilities
-          <ul>
-            <li>point 1</li>
-            <li>point 2</li>
-            <li>point 3</li>
-          </ul>
-        </div>
-      </div>
-    </>
-  );
-}
+      <label htmlFor="location">Location</label>
+      <input
+        type="text"
+        id="location"
+        name="location"
+        defaultValue={location}
+      />
 
-function Experience() {
-  // company name, position title, main responsibilities of your jobs,
-  // date from and until when you worked for that company
-
-  return (
-    <>
-      <h2>Experience</h2>
-      <div className="experience">
-        <ExperienceInfo />
-      </div>
-    </>
+      <label htmlFor="url">URL</label>
+      <input type="url" id="url" name="url" defaultValue={url} />
+    </div>
   );
 }
 
 function Resume() {
-  return (
-    <div className="resume">
-      <PersonalInfo />
-      <Education />
-      <Experience />
-    </div>
-  );
+  const [resumeView, setResumeView] = useState(true);
+  const [personalInfo, setPersonalInfo] = useState({
+    name: "Joe Smith",
+    email: "joesmith@world.co",
+    phone: "123-555-1241",
+    location: "Toronto, Canada",
+    url: "joesmith.community",
+  });
+
+  function switchView() {
+    setResumeView(!resumeView);
+  }
+
+  if (resumeView) {
+    return (
+      <div className="resume-view">
+        <PersonalInfo {...personalInfo} />
+        <Education />
+        <Experience />
+        <button onClick={switchView}>Edit</button>
+      </div>
+    );
+  } else {
+    return (
+      <div className="resume-form">
+        <PersonalInfoInput {...personalInfo} />
+        <button onClick={switchView}>Submit</button>
+      </div>
+    );
+  }
 }
 
 export default function App() {

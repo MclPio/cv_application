@@ -30,3 +30,7 @@
   display: flex;
   gap: 16px;
 }
+
+.hidden {
+  display: none;
+}
