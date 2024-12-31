@@ -28,7 +28,6 @@ export default function Experience({ experience }) {
 
   return (
     <>
-      <h2>Experience</h2>
       <div className="experience">
         <ExperienceInfo experience={experience} />
       </div>

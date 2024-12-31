@@ -71,7 +71,7 @@ function ExperienceInput({ experience, setExperience }) {
         value={experience.companyName}
         onChange={handleChange}
       />
-      <label htmlFor="position-title">Company Name</label>
+      <label htmlFor="position-title">Position Title</label>
       <input
         type="text"
         id="position-title"
@@ -165,7 +165,10 @@ function Resume() {
       <div className="resume-view">
         <PersonalInfo {...personalInfo} />
         <Education />
-        <Experience experience={experience} />
+        <h2>Experience</h2>
+        {experiences.map((experience) => (
+          <Experience key={experience.id} experience={experience} />
+        ))}
         <button onClick={switchView}>Edit</button>
       </div>
     );
@@ -176,10 +179,25 @@ function Resume() {
           personalInfo={personalInfo}
           setPersonalInfo={setPersonalInfo}
         />
-        <ExperienceInput
-          experience={experience}
-          setExperience={setExperience}
-        />
+        {experiences.map((experience) => (
+          <div key={experience.id}>
+            <ExperienceInput
+              experience={experience}
+              setExperience={(updatedExperience) =>
+                updateExperience(experience.id, updatedExperience)
+              }
+            />
+            {experiences.length > 1 && (
+              <button
+                onClick={() => deleteExperience(experience.id)}
+                className="absolute top-0 right-0 px-3 py-1 bg-red-500 text-white rounded"
+              >
+                Delete Job
+              </button>
+            )}
+            <button onClick={addExperience}>Add Another Job</button>
+          </div>
+        ))}
         <button onClick={switchView}>Submit</button>
       </div>
     );
