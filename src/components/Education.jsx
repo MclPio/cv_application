@@ -1,25 +1,27 @@
-function School() {
+function School({ education }) {
   return (
     <>
-      <div className="school">
-        <div className="school-left">
-          <div>
-            <b>school name</b>
+      {education.map((edu) => (
+        <div className="school" key={edu.id}>
+          <div className="school-left">
+            <div>
+              <b>{edu.schoolName}</b>
+            </div>
+            <div>{edu.titleOfStudy}</div>
           </div>
-          <div>title of study</div>
+          <div>{edu.date}</div>
         </div>
-        <div>date of study</div>
-      </div>
+      ))}
     </>
   );
 }
 
-export default function Education() {
+export default function Education({ education }) {
   return (
     <>
       <h2>Education</h2>
       <div className="education">
-        <School />
+        <School education={education} />
       </div>
     </>
   );

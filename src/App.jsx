@@ -4,79 +4,33 @@ import Experience from "./components/Experience";
 import Education from "./components/Education";
 import PersonalInfo from "./components/PersonalInfo";
 import PersonalInfoInput from "./components/PersonalInfoInput";
+import ExperienceInput from "./components/ExperienceInput";
 
-// JobDescriptionBullet -> JobDescriptionList -> ExperienceInput -> Resume
-
-function JobDescriptionBullet({ string, onDescriptionChange, index }) {
-  return (
-    <textarea
-      value={string}
-      onChange={(e) => onDescriptionChange(index, e.target.value)}
-    ></textarea>
-  );
-}
-
-function JobDescriptionList({
-  jobDescriptions,
-  onDescriptionChange,
-  onDeleteDescription,
-}) {
-  return jobDescriptions.map((description, index) => (
-    <div key={index}>
-      <JobDescriptionBullet
-        string={description}
-        index={index}
-        onDescriptionChange={onDescriptionChange}
-      />
-      <button onClick={() => onDeleteDescription(index)}>×</button>
-    </div>
-  ));
-}
-
-function ExperienceInput({ experience, setExperience }) {
-  function handleDeleteDescription(index) {
-    const newJobDescription = experience.jobDescription.filter(
-      (_, i) => i !== index
-    );
-    setExperience({
-      ...experience,
-      jobDescription: newJobDescription,
-    });
-  }
-
+function EducationItem({ education, setEducation, deleteEducation }) {
   function handleChange(e) {
-    const newExperience = {
-      ...experience,
+    const newEducation = {
+      ...education,
       [e.target.name]: e.target.value,
     };
-    setExperience(newExperience);
-  }
-
-  function handleDescriptionChange(index, newValue) {
-    const newJobDescription = [...experience.jobDescription];
-    newJobDescription[index] = newValue;
-    setExperience({
-      ...experience,
-      jobDescription: newJobDescription,
-    });
+    setEducation(newEducation);
   }
 
   return (
-    <div className="experience-input">
-      <label htmlFor="company-name">Company Name</label>
+    <div className="education-item">
+      <label htmlFor="school-name">School Name</label>
       <input
         type="text"
-        id="company-name"
-        name="companyName"
-        value={experience.companyName}
+        id="school-name"
+        name="schoolName"
+        value={education.schoolName}
         onChange={handleChange}
       />
-      <label htmlFor="position-title">Position Title</label>
+      <label htmlFor="title-of-study">Program</label>
       <input
         type="text"
-        id="position-title"
-        name="positionTitle"
-        value={experience.positionTitle}
+        id="title-of-study"
+        name="titleOfStudy"
+        value={education.titleOfStudy}
         onChange={handleChange}
       />
       <label htmlFor="date">Date</label>
@@ -84,27 +38,38 @@ function ExperienceInput({ experience, setExperience }) {
         type="text"
         id="date"
         name="date"
-        value={experience.date}
+        value={education.date}
         onChange={handleChange}
       />
-      {/* well now what? need to design a dynamic form input? or just use a textbox? */}
-      <label htmlFor="job-description">Job Description</label>
-      <JobDescriptionList
-        jobDescriptions={experience.jobDescription}
-        onDescriptionChange={handleDescriptionChange}
-        onDeleteDescription={handleDeleteDescription}
-      />
-      <button
-        onClick={() =>
-          setExperience({
-            ...experience,
-            jobDescription: [...experience.jobDescription, ""],
-          })
-        }
-      >
-        Add Description
-      </button>
+      <button onClick={() => deleteEducation(education.id)}>×</button>
     </div>
+  );
+}
+
+function EducationInput({
+  education,
+  setEducation,
+  deleteEducation,
+  addEducation,
+  updateEducation,
+}) {
+  return (
+    <>
+      <h3>Education</h3>
+      <div> form inputs or something</div>
+      {education.map((edu) => (
+        <div key={edu.id}>
+          <EducationItem
+            education={edu}
+            setEducation={(updatedEducation) =>
+              updateEducation(edu.id, updatedEducation)
+            }
+            deleteEducation={deleteEducation}
+          />
+        </div>
+      ))}
+      <button onClick={addEducation}>Add Another Study</button>
+    </>
   );
 }
 
@@ -128,6 +93,15 @@ function Resume() {
         "Wired electric wires improving efficiency by 25%",
         "Ate 5 cupcakes from company cafeteria consistently achieving a 250% eating ratio compared to others",
       ],
+    },
+  ]);
+
+  const [education, setEducation] = useState([
+    {
+      id: 1,
+      schoolName: "University of Toronto",
+      titleOfStudy: "Economics",
+      date: "2020",
     },
   ]);
 
@@ -160,15 +134,39 @@ function Resume() {
     setResumeView(!resumeView);
   }
 
+  function updateEducation(id, updatedEducation) {
+    setEducation(
+      education.map((edu) =>
+        edu.id === id ? { ...updatedEducation, id } : edu
+      )
+    );
+  }
+
+  function addEducation() {
+    setEducation([
+      ...education,
+      {
+        id: Date.now(),
+        schoolName: "",
+        titleOfStudy: "",
+        date: "",
+      },
+    ]);
+  }
+
+  function deleteEducation(id) {
+    setEducation(education.filter((edu) => edu.id !== id));
+  }
+
   if (resumeView) {
     return (
       <div className="resume-view">
         <PersonalInfo {...personalInfo} />
-        <Education />
         <h2>Experience</h2>
         {experiences.map((experience) => (
           <Experience key={experience.id} experience={experience} />
         ))}
+        <Education education={education} />
         <button onClick={switchView}>Edit</button>
       </div>
     );
@@ -198,6 +196,14 @@ function Resume() {
             <button onClick={addExperience}>Add Another Job</button>
           </div>
         ))}
+
+        <EducationInput
+          education={education}
+          setEducation={setEducation}
+          deleteEducation={deleteEducation}
+          addEducation={addEducation}
+          updateEducation={updateEducation}
+        />
         <button onClick={switchView}>Submit</button>
       </div>
     );
