@@ -1,14 +1,10 @@
 import { useState } from "react";
 import "./styles/app.css";
-import Experience from "./components/Experience";
-import Education from "./components/Education";
-import PersonalInfo from "./components/PersonalInfo";
-import PersonalInfoInput from "./components/PersonalInfoInput";
-import ExperienceParentInput from "./components/ExperienceInput";
-import EducationInput from "./components/EducationInput";
+import ResumeView from "./components/ResumeView";
+import FormView from "./components/FormView";
 
 function Resume() {
-  const [resumeView, setResumeView] = useState(false);
+  const [resumeView, setResumeView] = useState(true);
   const [personalInfo, setPersonalInfo] = useState({
     name: "Joe Smith",
     email: "joesmith@world.co",
@@ -85,30 +81,25 @@ function Resume() {
 
   if (resumeView) {
     return (
-      <div className="resume-view">
-        <PersonalInfo {...personalInfo} />
-        <h2>Experience</h2>
-        {experiences.map((experience) => (
-          <Experience key={experience.id} experience={experience} />
-        ))}
-        <Education education={education} />
+      <>
+        <ResumeView
+          personalInfo={personalInfo}
+          experiences={experiences}
+          education={education}
+        />
         <button onClick={switchView}>Edit</button>
-      </div>
+      </>
     );
   } else {
     return (
-      <div className="resume-form">
-        <PersonalInfoInput
+      <>
+        <FormView
           personalInfo={personalInfo}
           setPersonalInfo={setPersonalInfo}
-        />
-        <ExperienceParentInput
           experiences={experiences}
           setExperiences={setExperiences}
           deleteExperience={deleteExperience}
           addExperience={addExperience}
-        />
-        <EducationInput
           education={education}
           setEducation={setEducation}
           deleteEducation={deleteEducation}
@@ -116,7 +107,7 @@ function Resume() {
           updateEducation={updateEducation}
         />
         <button onClick={switchView}>Submit</button>
-      </div>
+      </>
     );
   }
 }
@@ -130,3 +121,7 @@ export default function App() {
     </>
   );
 }
+
+// todo:
+// 1. Have one add job button, currently every job has the button
+// 2. Style with DaisyUI

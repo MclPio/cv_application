@@ -1,9 +1,9 @@
-function JobDescriptionBullet({ string, onDescriptionChange, index }) {
+function JobDescriptionBullet({ string, onDescriptionChange, index, id }) {
   return (
     <textarea
       value={string}
       onChange={(e) => onDescriptionChange(index, e.target.value)}
-      id={`job-description-${index}`}
+      id={`job-description-${id}-${index}`}
     ></textarea>
   );
 }
@@ -12,6 +12,7 @@ function JobDescriptionList({
   jobDescriptions,
   onDescriptionChange,
   onDeleteDescription,
+  id,
 }) {
   return (
     <>
@@ -22,6 +23,7 @@ function JobDescriptionList({
             string={description}
             index={index}
             onDescriptionChange={onDescriptionChange}
+            id={id}
           />
           <button onClick={() => onDeleteDescription(index)}>×</button>
         </div>
@@ -61,26 +63,26 @@ function ExperienceInput({ experience, setExperience }) {
   return (
     <div className="experience-input">
       <h3>Experience</h3>
-      <label htmlFor="company-name">Company Name</label>
+      <label htmlFor={`company-name-${experience.id}`}>Company Name</label>
       <input
         type="text"
-        id="company-name"
+        id={`company-name-${experience.id}`}
         name="companyName"
         value={experience.companyName}
         onChange={handleChange}
       />
-      <label htmlFor="position-title">Position Title</label>
+      <label htmlFor={`position-title-${experience.id}`}>Position Title</label>
       <input
         type="text"
-        id="position-title"
+        id={`position-title-${experience.id}`}
         name="positionTitle"
         value={experience.positionTitle}
         onChange={handleChange}
       />
-      <label htmlFor="date">Date</label>
+      <label htmlFor={`date-${experience.id}`}>Date</label>
       <input
         type="text"
-        id="date"
+        id={`date-${experience.id}`}
         name="date"
         value={experience.date}
         onChange={handleChange}
@@ -89,6 +91,7 @@ function ExperienceInput({ experience, setExperience }) {
         jobDescriptions={experience.jobDescription}
         onDescriptionChange={handleDescriptionChange}
         onDeleteDescription={handleDeleteDescription}
+        id={experience.id}
       />
       <button
         onClick={() =>
