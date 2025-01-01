@@ -4,74 +4,8 @@ import Experience from "./components/Experience";
 import Education from "./components/Education";
 import PersonalInfo from "./components/PersonalInfo";
 import PersonalInfoInput from "./components/PersonalInfoInput";
-import ExperienceInput from "./components/ExperienceInput";
-
-function EducationItem({ education, setEducation, deleteEducation }) {
-  function handleChange(e) {
-    const newEducation = {
-      ...education,
-      [e.target.name]: e.target.value,
-    };
-    setEducation(newEducation);
-  }
-
-  return (
-    <div className="education-item">
-      <label htmlFor="school-name">School Name</label>
-      <input
-        type="text"
-        id="school-name"
-        name="schoolName"
-        value={education.schoolName}
-        onChange={handleChange}
-      />
-      <label htmlFor="title-of-study">Program</label>
-      <input
-        type="text"
-        id="title-of-study"
-        name="titleOfStudy"
-        value={education.titleOfStudy}
-        onChange={handleChange}
-      />
-      <label htmlFor="date">Date</label>
-      <input
-        type="text"
-        id="date"
-        name="date"
-        value={education.date}
-        onChange={handleChange}
-      />
-      <button onClick={() => deleteEducation(education.id)}>×</button>
-    </div>
-  );
-}
-
-function EducationInput({
-  education,
-  setEducation,
-  deleteEducation,
-  addEducation,
-  updateEducation,
-}) {
-  return (
-    <>
-      <h3>Education</h3>
-      <div> form inputs or something</div>
-      {education.map((edu) => (
-        <div key={edu.id}>
-          <EducationItem
-            education={edu}
-            setEducation={(updatedEducation) =>
-              updateEducation(edu.id, updatedEducation)
-            }
-            deleteEducation={deleteEducation}
-          />
-        </div>
-      ))}
-      <button onClick={addEducation}>Add Another Study</button>
-    </>
-  );
-}
+import ExperienceParentInput from "./components/ExperienceInput";
+import EducationInput from "./components/EducationInput";
 
 function Resume() {
   const [resumeView, setResumeView] = useState(false);
@@ -95,7 +29,6 @@ function Resume() {
       ],
     },
   ]);
-
   const [education, setEducation] = useState([
     {
       id: 1,
@@ -116,14 +49,6 @@ function Resume() {
         jobDescription: [],
       },
     ]);
-  }
-
-  function updateExperience(id, updatedExperience) {
-    setExperiences(
-      experiences.map((exp) =>
-        exp.id === id ? { ...updatedExperience, id } : exp
-      )
-    );
   }
 
   function deleteExperience(id) {
@@ -177,26 +102,12 @@ function Resume() {
           personalInfo={personalInfo}
           setPersonalInfo={setPersonalInfo}
         />
-        {experiences.map((experience) => (
-          <div key={experience.id}>
-            <ExperienceInput
-              experience={experience}
-              setExperience={(updatedExperience) =>
-                updateExperience(experience.id, updatedExperience)
-              }
-            />
-            {experiences.length > 1 && (
-              <button
-                onClick={() => deleteExperience(experience.id)}
-                className="absolute top-0 right-0 px-3 py-1 bg-red-500 text-white rounded"
-              >
-                Delete Job
-              </button>
-            )}
-            <button onClick={addExperience}>Add Another Job</button>
-          </div>
-        ))}
-
+        <ExperienceParentInput
+          experiences={experiences}
+          setExperiences={setExperiences}
+          deleteExperience={deleteExperience}
+          addExperience={addExperience}
+        />
         <EducationInput
           education={education}
           setEducation={setEducation}

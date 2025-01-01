@@ -9,6 +9,7 @@ export default function PersonalInfoInput({ personalInfo, setPersonalInfo }) {
 
   return (
     <div className="personal-info-input">
+      <h3>Personal Info</h3>
       <label htmlFor="fullname">Name</label>
       <input
         type="text"

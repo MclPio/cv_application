@@ -3,6 +3,7 @@ function JobDescriptionBullet({ string, onDescriptionChange, index }) {
     <textarea
       value={string}
       onChange={(e) => onDescriptionChange(index, e.target.value)}
+      id={`job-description-${index}`}
     ></textarea>
   );
 }
@@ -12,19 +13,24 @@ function JobDescriptionList({
   onDescriptionChange,
   onDeleteDescription,
 }) {
-  return jobDescriptions.map((description, index) => (
-    <div key={index}>
-      <JobDescriptionBullet
-        string={description}
-        index={index}
-        onDescriptionChange={onDescriptionChange}
-      />
-      <button onClick={() => onDeleteDescription(index)}>×</button>
-    </div>
-  ));
+  return (
+    <>
+      <p>Job Description</p>
+      {jobDescriptions.map((description, index) => (
+        <div key={index}>
+          <JobDescriptionBullet
+            string={description}
+            index={index}
+            onDescriptionChange={onDescriptionChange}
+          />
+          <button onClick={() => onDeleteDescription(index)}>×</button>
+        </div>
+      ))}
+    </>
+  );
 }
 
-export default function ExperienceInput({ experience, setExperience }) {
+function ExperienceInput({ experience, setExperience }) {
   function handleDeleteDescription(index) {
     const newJobDescription = experience.jobDescription.filter(
       (_, i) => i !== index
@@ -54,6 +60,7 @@ export default function ExperienceInput({ experience, setExperience }) {
 
   return (
     <div className="experience-input">
+      <h3>Experience</h3>
       <label htmlFor="company-name">Company Name</label>
       <input
         type="text"
@@ -78,8 +85,6 @@ export default function ExperienceInput({ experience, setExperience }) {
         value={experience.date}
         onChange={handleChange}
       />
-      {/* well now what? need to design a dynamic form input? or just use a textbox? */}
-      <label htmlFor="job-description">Job Description</label>
       <JobDescriptionList
         jobDescriptions={experience.jobDescription}
         onDescriptionChange={handleDescriptionChange}
@@ -96,5 +101,44 @@ export default function ExperienceInput({ experience, setExperience }) {
         Add Description
       </button>
     </div>
+  );
+}
+
+export default function ExperienceParentInput({
+  experiences,
+  setExperiences,
+  addExperience,
+  deleteExperience,
+}) {
+  function updateExperience(id, updatedExperience) {
+    setExperiences(
+      experiences.map((exp) =>
+        exp.id === id ? { ...updatedExperience, id } : exp
+      )
+    );
+  }
+
+  return (
+    <>
+      {experiences.map((experience) => (
+        <div key={experience.id}>
+          <ExperienceInput
+            experience={experience}
+            setExperience={(updatedExperience) =>
+              updateExperience(experience.id, updatedExperience)
+            }
+          />
+          {experiences.length > 1 && (
+            <button
+              onClick={() => deleteExperience(experience.id)}
+              className="absolute top-0 right-0 px-3 py-1 bg-red-500 text-white rounded"
+            >
+              Delete Job
+            </button>
+          )}
+          <button onClick={addExperience}>Add Another Job</button>
+        </div>
+      ))}
+    </>
   );
 }
