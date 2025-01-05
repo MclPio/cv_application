@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./styles/app.css";
 import ResumeView from "./components/ResumeView";
 import FormView from "./components/FormView";
 
@@ -81,47 +80,70 @@ function Resume() {
 
   if (resumeView) {
     return (
-      <>
-        <ResumeView
-          personalInfo={personalInfo}
-          experiences={experiences}
-          education={education}
-        />
-        <button onClick={switchView}>Edit</button>
-      </>
+      <div className="min-h-screen bg-base-200 py-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="card bg-base-100 shadow-xl">
+            <div className="card-body">
+              <ResumeView
+                personalInfo={personalInfo}
+                experiences={experiences}
+                education={education}
+              />
+              <div className="card-actions justify-end mt-6">
+                <button 
+                  className="btn btn-primary" 
+                  onClick={switchView}
+                >
+                  Edit Resume
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   } else {
     return (
-      <>
-        <FormView
-          personalInfo={personalInfo}
-          setPersonalInfo={setPersonalInfo}
-          experiences={experiences}
-          setExperiences={setExperiences}
-          deleteExperience={deleteExperience}
-          addExperience={addExperience}
-          education={education}
-          setEducation={setEducation}
-          deleteEducation={deleteEducation}
-          addEducation={addEducation}
-          updateEducation={updateEducation}
-        />
-        <button onClick={switchView}>Submit</button>
-      </>
+      <div className="min-h-screen bg-base-200 py-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="card bg-base-100 shadow-xl">
+            <div className="card-body">
+              <h2 className="card-title text-2xl mb-6">Edit Your Resume</h2>
+              <FormView
+                personalInfo={personalInfo}
+                setPersonalInfo={setPersonalInfo}
+                experiences={experiences}
+                setExperiences={setExperiences}
+                deleteExperience={deleteExperience}
+                addExperience={addExperience}
+                education={education}
+                setEducation={setEducation}
+                deleteEducation={deleteEducation}
+                addEducation={addEducation}
+                updateEducation={updateEducation}
+              />
+              <div className="card-actions justify-end mt-6">
+                <button 
+                  className="btn btn-primary" 
+                  onClick={switchView}
+                >
+                  Save Resume
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }
 
 export default function App() {
   return (
-    <>
-      <div className="container">
+    <div className="bg-base-200 min-h-screen">
+      <div className="container mx-auto px-4">
         <Resume />
       </div>
-    </>
+    </div>
   );
 }
-
-// todo:
-// 1. Have one add job button, currently every job has the button
-// 2. Style with DaisyUI

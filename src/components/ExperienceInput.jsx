@@ -1,10 +1,13 @@
 function JobDescriptionBullet({ string, onDescriptionChange, index, id }) {
   return (
-    <textarea
-      value={string}
-      onChange={(e) => onDescriptionChange(index, e.target.value)}
-      id={`job-description-${id}-${index}`}
-    ></textarea>
+    <div className="form-control w-full">
+      <textarea
+        value={string}
+        onChange={(e) => onDescriptionChange(index, e.target.value)}
+        id={`job-description-${id}-${index}`}
+        className="textarea textarea-bordered h-24 w-full"
+      ></textarea>
+    </div>
   );
 }
 
@@ -15,20 +18,25 @@ function JobDescriptionList({
   id,
 }) {
   return (
-    <>
-      <p>Job Description</p>
+    <div className="space-y-4">
+      <h4 className="font-medium text-base">Job Description</h4>
       {jobDescriptions.map((description, index) => (
-        <div key={index}>
+        <div key={index} className="flex gap-2 items-start">
           <JobDescriptionBullet
             string={description}
             index={index}
             onDescriptionChange={onDescriptionChange}
             id={id}
           />
-          <button onClick={() => onDeleteDescription(index)}>×</button>
+          <button 
+            onClick={() => onDeleteDescription(index)}
+            className="btn btn-circle btn-sm btn-ghost"
+          >
+            ×
+          </button>
         </div>
       ))}
-    </>
+    </div>
   );
 }
 
@@ -61,48 +69,71 @@ function ExperienceInput({ experience, setExperience }) {
   }
 
   return (
-    <div className="experience-input">
-      <h3>Experience</h3>
-      <label htmlFor={`company-name-${experience.id}`}>Company Name</label>
-      <input
-        type="text"
-        id={`company-name-${experience.id}`}
-        name="companyName"
-        value={experience.companyName}
-        onChange={handleChange}
-      />
-      <label htmlFor={`position-title-${experience.id}`}>Position Title</label>
-      <input
-        type="text"
-        id={`position-title-${experience.id}`}
-        name="positionTitle"
-        value={experience.positionTitle}
-        onChange={handleChange}
-      />
-      <label htmlFor={`date-${experience.id}`}>Date</label>
-      <input
-        type="text"
-        id={`date-${experience.id}`}
-        name="date"
-        value={experience.date}
-        onChange={handleChange}
-      />
+    <div className="card bg-base-200 shadow-sm p-6 mb-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div className="form-control w-full">
+          <label className="label" htmlFor={`company-name-${experience.id}`}>
+            <span className="label-text">Company Name</span>
+          </label>
+          <input
+            type="text"
+            id={`company-name-${experience.id}`}
+            name="companyName"
+            value={experience.companyName}
+            onChange={handleChange}
+            className="input input-bordered w-full"
+          />
+        </div>
+
+        <div className="form-control w-full">
+          <label className="label" htmlFor={`position-title-${experience.id}`}>
+            <span className="label-text">Position Title</span>
+          </label>
+          <input
+            type="text"
+            id={`position-title-${experience.id}`}
+            name="positionTitle"
+            value={experience.positionTitle}
+            onChange={handleChange}
+            className="input input-bordered w-full"
+          />
+        </div>
+
+        <div className="form-control w-full">
+          <label className="label" htmlFor={`date-${experience.id}`}>
+            <span className="label-text">Date</span>
+          </label>
+          <input
+            type="text"
+            id={`date-${experience.id}`}
+            name="date"
+            value={experience.date}
+            onChange={handleChange}
+            className="input input-bordered w-full"
+          />
+        </div>
+      </div>
+
       <JobDescriptionList
         jobDescriptions={experience.jobDescription}
         onDescriptionChange={handleDescriptionChange}
         onDeleteDescription={handleDeleteDescription}
         id={experience.id}
       />
-      <button
-        onClick={() =>
-          setExperience({
-            ...experience,
-            jobDescription: [...experience.jobDescription, ""],
-          })
-        }
-      >
-        Add Description
-      </button>
+      
+      <div className="mt-4">
+        <button
+          onClick={() =>
+            setExperience({
+              ...experience,
+              jobDescription: [...experience.jobDescription, ""],
+            })
+          }
+          className="btn btn-outline btn-sm"
+        >
+          Add Description
+        </button>
+      </div>
     </div>
   );
 }
@@ -122,9 +153,9 @@ export default function ExperienceParentInput({
   }
 
   return (
-    <>
+    <div className="space-y-4">
       {experiences.map((experience) => (
-        <div key={experience.id}>
+        <div key={experience.id} className="relative">
           <ExperienceInput
             experience={experience}
             setExperience={(updatedExperience) =>
@@ -134,14 +165,13 @@ export default function ExperienceParentInput({
           {experiences.length > 1 && (
             <button
               onClick={() => deleteExperience(experience.id)}
-              className="absolute top-0 right-0 px-3 py-1 bg-red-500 text-white rounded"
+              className="btn btn-error btn-sm absolute top-2 right-2"
             >
               Delete Job
             </button>
           )}
-          <button onClick={addExperience}>Add Another Job</button>
         </div>
       ))}
-    </>
+    </div>
   );
 }
